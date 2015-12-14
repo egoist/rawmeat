@@ -27,6 +27,7 @@ co(function* () {
   }
   // sort blogs from a to z
   // if obj.top is true set it top
+  const order = config.order === 'newest' ? 1 : -1
   blogs = blogs.sort((a, b) => {
     if (a.top && !b.top) {
       return -1
@@ -34,7 +35,7 @@ co(function* () {
     if (b.top && !a.top) {
       return 1
     }
-    return new Date(b.date) - new Date(a.date)
+    return (new Date(b.date) - new Date(a.date)) * order
   })
   // generate post list table in array format
   const indexTable = [
