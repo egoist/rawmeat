@@ -16,8 +16,7 @@ co(function* () {
   const files = yield glob(blogsLocation)
   // get file meta and push to blogs array
   var blogs = []
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i]
+  for (var file of files) {
     var blog = yield fs.readFile(file, 'utf8')
     var blogContent = readPost(blog)
     var meta = blogContent.meta
@@ -42,8 +41,7 @@ co(function* () {
     ['标题', '分类', '日期']
   ]
   const indexApiList = []
-  for (var i = 0; i < blogs.length; i++) {
-    var blog = blogs[i]
+  for (var blog of blogs) {
     // push a blog item to blogs array
     indexTable.push([
       `[${blog.top ? '[置顶] ' : ''}${blog.title}](/blogs/${blog.filename})`,
