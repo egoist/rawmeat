@@ -1,0 +1,10 @@
+{
+  "title": "生肉使用教程",
+  "date": "2015-12-12T00:00:00.000Z",
+  "top": true,
+  "categories": [
+    "帮助"
+  ],
+  "filename": "get-started.md",
+  "content": "\n\n首先确保你安装了 `node >= 4.0.0` 的版本。\n\n在 fork 了一份之后本地执行:\n\n```bash\nnpm install\n```\n\n新建文章:\n\n```bash\nnpm run post hello-world\n```\n\n添加文章后重新生成首页的文章列表:\n\n```bash\nnpm run build\n```\n\n你可以在根目录的 `rawmeat.json` 填写你的博客信息。\n"
+}

@@ -1,0 +1,33 @@
+[
+  {
+    "title": "生肉使用教程",
+    "date": "2015-12-12T00:00:00.000Z",
+    "top": true,
+    "categories": [
+      "帮助"
+    ],
+    "filename": "get-started.md",
+    "content": "\n\n首先确保你安装了 `node >= 4.0.0` 的版本。\n\n在 fork 了一份之后本地执行:\n\n```bash\nnpm install\n```\n\n新建文章:\n\n```bash\nnpm run post hello-world\n```\n\n添加文章后重新生成首页的文章列表:\n\n```bash\nnpm run build\n```\n\n你可以在根目录的 `rawmeat.json` 填写你的博客信息。\n",
+    "postApiPath": "get-started.json"
+  },
+  {
+    "title": "生肉小技巧",
+    "date": "2015-12-13 15:29",
+    "categories": [
+      "帮助"
+    ],
+    "filename": "pro-tips.md",
+    "content": "\n|小技巧|\n|---|\n|在文章 meta 里指定 `top: true` 来置顶文章|\n",
+    "postApiPath": "pro-tips.json"
+  },
+  {
+    "title": "正确的文章格式",
+    "date": "2015-12-13T00:00:00.000Z",
+    "categories": [
+      "帮助"
+    ],
+    "filename": "post-format.md",
+    "content": "\n标准的生肉博客文章格式其实和 Jekyll 是完全一样的，而和 Hexo 的区别也只是开头建议以 `---` 开始，这样 GitHub 能识别开头的 meta 并渲染成一个表格。\n\n同时，开头的 meta 必须有的信息是 `title` `date` `categories`。\n\n以下是一个标准的格式，你可以用 `npm run post hello-world` 快速生成一个：\n\n```markdown\n---\ntitle: 你好世界\ndate: 2015-12-21\ncategories:\n  - 我的生活\n---\n今天吃了三个土豆，开始想念乐视了。\n```\n",
+    "postApiPath": "post-format.json"
+  }
+]

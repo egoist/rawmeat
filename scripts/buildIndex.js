@@ -8,20 +8,25 @@ const table = require('markdown-table')
 const formatDate = require('./utils/formatDate')
 const fs = pify(require('fs'))
 const glob = pify(require("glob"))
-const config = require('../rawmeat.json')
+const config = require('../rawmeat')
 require('shelljs/global')
 
-const blogsLocation = path.join(process.cwd(), 'blogs/!(README).md');
 co(function* () {
+  const blogsLocation = path.join(process.cwd(), 'blogs/!(README).md');
   const files = yield glob(blogsLocation)
+  // get file meta and push to blogs array
   var blogs = []
   for (var i = 0; i < files.length; i++) {
     var file = files[i]
     var blog = yield fs.readFile(file, 'utf8')
-    var meta = readPost(blog).meta
+    var blogContent = readPost(blog)
+    var meta = blogContent.meta
     meta.filename = path.basename(file)
+    meta.content = blogContent.content
     blogs.push(meta)
   }
+  // sort blogs from a to z
+  // if obj.top is true set it top
   blogs = blogs.sort((a, b) => {
     if (a.top && !b.top) {
       return -1
@@ -31,17 +36,28 @@ co(function* () {
     }
     return new Date(b.date) - new Date(a.date)
   })
+  // generate post list table in array format
   const indexTable = [
     ['标题', '分类', '日期']
   ]
+  const indexApiList = []
   for (var i = 0; i < blogs.length; i++) {
-    var post = blogs[i]
+    var blog = blogs[i]
+    // push a blog item to blogs array
     indexTable.push([
-      `[${post.top ? '[置顶] ' : ''}${post.title}](/blogs/${post.filename})`,
-      Array.isArray(post.categories) ? post.categories.join(',') : post.categories,
-      formatDate(post.date)
+      `[${blog.top ? '[置顶] ' : ''}${blog.title}](/blogs/${blog.filename})`,
+      Array.isArray(blog.categories) ? blog.categories.join(',') : blog.categories,
+      formatDate(blog.date)
     ])
+    indexApiList.push(Object.assign({}, blog, {
+      postApiPath: blog.filename.replace(/\.md$/, '.json')
+    }))
+    // generate api for the blog index
+    yield fs.writeFile(`${process.cwd()}/api/index.json`, JSON.stringify(indexApiList, null, 2), 'utf8')
+    // generate api for the blog post
+    yield fs.writeFile(`${process.cwd()}/api/${blog.filename.replace(/\.md$/, '.json')}`, JSON.stringify(blog, null, 2), 'utf8')
   }
+  // parse README template and replace data with user configs
   var readmeLocation = path.join(process.cwd(), 'scripts/templates/README.md')
   var readme = yield fs.readFile(readmeLocation, 'utf8')
   readme = readme
@@ -49,7 +65,9 @@ co(function* () {
     .replace(/__DESCRIPTION__/g, config.description)
     .replace(/__POST_LIST__/g, table(indexTable))
     .replace(/__LICENSE__/g, config.license)
+  // generate README in root directory
   yield fs.writeFile(process.cwd() + '/README.md', readme, 'utf8')
+  // copy README to ./blogs
   cp('-f', process.cwd() + '/README.md', process.cwd() + '/blogs/README.md')
   console.log('成功了 ( ゜- ゜)つロ'.green)
 }).catch(err => console.log(err))

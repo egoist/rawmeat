@@ -1,0 +1,9 @@
+{
+  "title": "正确的文章格式",
+  "date": "2015-12-13T00:00:00.000Z",
+  "categories": [
+    "帮助"
+  ],
+  "filename": "post-format.md",
+  "content": "\n标准的生肉博客文章格式其实和 Jekyll 是完全一样的，而和 Hexo 的区别也只是开头建议以 `---` 开始，这样 GitHub 能识别开头的 meta 并渲染成一个表格。\n\n同时，开头的 meta 必须有的信息是 `title` `date` `categories`。\n\n以下是一个标准的格式，你可以用 `npm run post hello-world` 快速生成一个：\n\n```markdown\n---\ntitle: 你好世界\ndate: 2015-12-21\ncategories:\n  - 我的生活\n---\n今天吃了三个土豆，开始想念乐视了。\n```\n"
+}
